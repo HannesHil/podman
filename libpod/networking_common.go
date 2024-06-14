@@ -249,6 +249,15 @@ func (c *Container) getContainerNetworkInfo() (*define.InspectNetworkSettings, e
 	netStatus := c.getNetworkStatus()
 	// If this is empty, we're probably slirp4netns
 	if len(netStatus) == 0 {
+		addedNet := new(define.InspectAdditionalNetwork)
+		name := "pesto"
+		ip := "127.0.0.1"
+		addedNet.NetworkID = name
+		basicConfig := new(define.InspectBasicNetworkConfig)
+		basicConfig.IPAddress = ip
+		addedNet.InspectBasicNetworkConfig = *basicConfig
+		settings.Networks = make(map[string]*define.InspectAdditionalNetwork, 1)
+		settings.Networks[name] = addedNet
 		return settings, nil
 	}
 
